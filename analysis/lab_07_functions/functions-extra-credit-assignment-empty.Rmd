@@ -1,0 +1,136 @@
+---
+title: "Functions"
+author: "Author"
+date: "2/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+rm( list = ls(all = TRUE)) # to clean the environment
+cat("\014") # to clean the console
+
+```
+
+
+```{r message=FALSE, warning=FALSE}
+library(magrittr) # pipes
+library(dplyr)    # wrangling
+library(ggplot2)  # graphing
+library(tidyr)    # pivoting
+
+```
+
+# Simulate data (2 points)
+
+a) Simulate data for performance on three exames with the following specifications:  
+- There are the total of 100 students in the class
+- Exam 1 has the mean of 60 and standard deviation of 7
+- Exam 2 has the mean of 73 and standard deviation of 9
+- Exam 3 has the mean of 80 and standard deviation of 12
+- There is a 7 % chance for a student to miss any of the exams
+
+b) create a histogram featuring all three exames faceted vertically (hist: same x axis)  
+
+
+```{r message=FALSE, warning=FALSE}
+set.seed(42)
+class_size <- 100
+ds <- tibble::tibble(
+
+  ) %>%
+  dplyr::mutate(
+  
+  ) %>%
+  dplyr::select(-exam1_missed, -exam2_missed, -exam3_missed)
+
+ds %>%
+  tidyr::pivot_longer(
+ 
+  ) %>%
+  ggplot( aes(x = score, fill = exam)) +
+  geom_histogram(alpha = .3)+
+  facet_grid(exam ~ .)+
+  theme_bw()
+```
+# Compute total score (1 point)
+
+c) compute the total score for each student.
+
+Hints:    
+- you will need to use perform rowwise computation using either `rowwise` or `base::rowSums`  
+- don't forget about `NA` values, each student must have a total score  
+
+```{r}
+
+```
+
+# Design the graph ( 3 points)
+
+We would like to design the graph that would plot the progress of any given student.   
+Hints:    
+- start by subsetting data for a single student  
+- You will need to isolate the values of the total score and compute the number of missing exams, store each as a numeric vector of length 1  
+- when you have 1x1 tibble, a good trick to convert it to a vector of legnth 1 is to add `%>% as.list() %>% unlist() %>% as.numeric()` at the end of the expression  
+- you will need to `pivot_longer` in order to make your graph  
+- you will need to use `geom_point`, `geom_line`, and `geom_text`  
+- don't forget about `aes(group = )` in your `geom_line`  
+- I have added some code to help you get started, it does not work in its present form, however it has multiple clues how to procede. However, if you feel this is distraction (or you like a challenge!) feel free to start from scratch. 
+
+```{r message=FALSE, warning=FALSE}
+selected_student_id = 1
+# subset data to focus on the relevant student
+d <- ds1 %>%  
+  filter( ) %>% 
+  tidyr::pivot_longer( ) 
+d
+
+selected_total_score <- d %>% # 
+n_exams_missing <- d %>%  # 
+  
+d %>% 
+  filter(!assessment == "total_score") %>% 
+  ggplot(aes(x = assessment, y = score  ))+
+  geom_point()+
+  geom_line()+
+  geom_text()+
+  labs(
+    title = paste0(
+      "Course performance for student [", selected_student_id,"]","\n",
+      "Number of exams missing = ", n_exams_missing, "; Total score = ", selected_total_score %>% round(1)
+    )
+  )+
+  theme_bw()
+```
+
+# Compose a function to plot one student (4 points)
+
+Create a function called `graph_student_progress` to plot all three exam scores. 
+Hints:
+- Your function should have two arguments: `d` and `selected_student_id`
+
+```{r message=FALSE, warning=FALSE}
+graph_student_progress <- function(d, selected_student_id){
+  # subset data to focus on the relevant student
+
+  # extract a value of the total score to use in the title
+
+  # extact a value of the number of missing exams to use in the title
+
+  # plot the graph
+
+  return(g)
+}
+# How to use
+ds1 %>% graph_student_progress(1)
+ds1 %>% graph_student_progress(25)
+ds1 %>% graph_student_progress(19)
+```
+# Session Info
+```{r}
+sessionInfo()
+```
+
